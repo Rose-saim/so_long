@@ -65,7 +65,7 @@ char	*ft_realloc(char *s1, char *s2)
 		return (0);
 	ft_memcpy(newstr, s1, len_s1);
 	ft_memcpy(newstr + len_s1, s2, len_s2);
-	newstr[len_s1 + len_s2] = 0;
+	newstr[len_s1 + len_s2] = '\0';
 	free(s1);
 	return (newstr);
 }

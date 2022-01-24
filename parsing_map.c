@@ -1,67 +1,97 @@
 #include "so_long.h"
 
-void    limit_map(char **map)
+int verif_map(char **map)
 {
-    int i;
-    int j;
+	int ret = 0;
 
-    i = 0;
-    j = 0;
-    while (map[i][j])
-    {
-        if (map[i][j] != '1')
-            return (1);
-        --i;
-    }
-    while (map[i][j])
-    {
-        if (map[i][j] != '1')
-            return (1);
-        ++j;
-    }
-    while (j >= 0)
-    {
-        if (map[i][j] != '1')
-            return (1);
-        --j;
-    }
-    while (i >= 0)
-    {
-        if (map[i][j] != '1')
-            return (1);
-        --i;
-    }
+	if (!map)
+		return (1);
+	ret = limit_first_part(map);
+	if (ret == 1)
+		return (0);
+	ret = limit_second_part(map);
+	if (ret == 1)
+		return (0);
+	ret = verif_intern(map);
+	if (ret == 1)
+		return (0);
+	return (1);
 }
 
-void    in_map(char **map)
+int limit_first_part(char **map)
 {
-    int i;
-    int j;
+	int x = 0;
+	int y = 0;
 
-    i = 0;
-    while (map[i][j])
-    {
-        if (map[i][j] != '1')
-            return (1);
-        ++i;
-    }
-    j = 0;
-    while (map[i][j])
-    {
-        if (map[i][j] != '1')
-            return (1);
-        ++j;
-    }
-    while (j >= 0)
-    {
-        if (map[i][j] != '1')
-            return (1);
-        --j;
-    }
-    while (i >= 0])
-    {
-        if (map[i][j] != '1')
-            return (1);
-        --i;
-    }
+	while (map[y + 1] != NULL)
+	{
+		if (map[y][x] != '1')
+			return (1);
+		++y;
+	}
+	while (map[y][x])
+	{
+		if (map[y][x] != '1')
+			return (1);
+		++x;
+	}
+	return (0);
+}
+
+int limit_second_part(char **map)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	x = 0;
+	while (map[y][x])
+	{
+		if (map[y][x] != '1')
+			return (1);
+		++x;
+	}
+	x -= 1;
+	while (map[y + 1] != NULL)
+	{
+		if (map[y][x] != '1')
+			return (1);
+		++y;
+	}
+	return (0);
+}
+
+int verif_intern(char **map)
+{
+	int x = 1;
+	int y = 1;
+	int exit_game = 1;
+	int perso = 1;
+	int item = 0;
+	int wall = 0;
+
+	while (map && map[y])
+	{
+		x = 1;
+		while (map[y][x])
+		{
+			if (map[y][x] == 'E')
+				exit_game -= 1;
+			if (map[y][x] == 'P')
+				perso -= 1;
+			if (map[y][x] == 'C')
+				++item;
+			if (map[y][x] == '0')
+				++wall;
+			if (exit_game == -1 || perso == -1 || item <= 0 || wall <= 0)
+				return (1);
+			if (exit_game == 0)
+				return (1);
+			if (!(map[y][x] == '1' || map[y][x] == '0' || map[y][x] == 'P' || map[y][x] == 'E' || map[y][x] == 'C'))
+				return (1);
+			++x;
+		}
+		++y;
+	}
+	return (0);
 }

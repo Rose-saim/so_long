@@ -1,9 +1,5 @@
 #include "so_long.h"
 
-#define WIDTH 900
-#define HEIGHT 700
-
-
 int main(int ac, char **av)
 {
 	t_game     game;
@@ -13,28 +9,28 @@ int main(int ac, char **av)
 	int	j = 0;
 
 	if (ac != 2)
-		return (0);
+		write_error("It is not good numbers of arguments");
 	while (av[1][i + 4])
 		++i;
 	while (av[1][i + j])
 	{
 		if (av[1][i + j] != str[j])
-			return (0);
+			write_error("File descriptor have not good extension \".ber\"");
 		++j;
 	}
-    fd = open("maps/map.ber", O_RDONLY);
+    fd = open(av[1], O_RDONLY);
+	if (fd == -1)
+		write_error("Error file descriptor");
     get_map(fd, &game);
     close (fd);
 	game.mlx = mlx_init();
+	if (!game.mlx)
+		write_error("Error since init mlx");
 	game.win = mlx_new_window(game.mlx, WIDTH, HEIGHT, "First map by image");
+	if (!game.win)
+		write_error("Error since create window");
 
-	int	width, height;
-	int	w, h;
-	game.background = mlx_xpm_file_to_image(game.mlx, "./img/Crate-_2_.xpm", &width, &height);
-	game.character = mlx_xpm_file_to_image(game.mlx, "./img/perso_wall.xpm", &w, &h);
-	game.wall = mlx_xpm_file_to_image(game.mlx, "./img/8.xpm", &w, &h);
-	game.item = mlx_xpm_file_to_image(game.mlx, "./img/mushroom.xpm", &w, &h);
-	game.exit = mlx_xpm_file_to_image(game.mlx, "./img/exit.xpm", &w, &h);
+	open_xpm(&game);
 	print_map(&game, 1, 1);
 
 	mlx_loop_hook(game.mlx, &handle_event, &game);
@@ -43,6 +39,9 @@ int main(int ac, char **av)
 
 	mlx_loop(game.mlx);
 
+	destroy_picture(&game);
+	free_map(game.map);
 	mlx_destroy_display(game.mlx);
 	free(game.mlx);
+	return 0;
 }

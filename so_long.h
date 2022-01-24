@@ -12,6 +12,9 @@
 #include <fcntl.h>
 #include "gnl/get_next_line.h"
 
+#define WIDTH 900
+#define HEIGHT 700
+
 #define WIN_WIDTH 500
 #define WIN_HEIGHT 900
 
@@ -51,9 +54,15 @@ char     **get_line(char **map, char *new_line);
 int		hanlde_input(int keysym, t_game *game);
 int	handle_event();
 int	destroy_win(t_game *game);
-int verif_limit(char **map);
+int limit_first_part(char **map);
+int limit_second_part(char **map);
 int verif_intern(char **map);
 int verif_map(char **map);
+
+void    free_map(char **map);
+void open_xpm(t_game *game);
+void    destroy_picture(t_game *game);
+void    write_error(char *str);
 
 void    get_map(int fd, t_game *game);
 void	print_map(t_game *game, int pst_x, int pst_y);
