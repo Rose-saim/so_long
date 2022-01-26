@@ -11,73 +11,36 @@ int	handle_event()
 	return (0);
 }
 
-
 int		hanlde_input(int keysym, t_game *game)
 {
-	static int	i = 1;
-	static int	j = 1;
-	static int	move = 0;
-
 	if (keysym == XK_Escape)
 		mlx_destroy_window(game->mlx, game->win);
-	if (keysym == 119)
+	else if (keysym == 119)
 	{
-		if (game->map[j - 1][i] == '1')
-			return 0;
-		j -= 1;
-		if (game->map[j][i] == 'C')
-		{
-			game->map[j][i] = '0';
-			game->collect.number_item_to_collect -= 1;
-		}
-		++move;
-		printf("Total numbers of movements|%d|\n", move);
-		update_map(game, i, j);
+		if (game->map[game->loc.character_y - 1][game->loc.character_x] == '1')
+			return(0) ;
+		key_up(game);
 	}
-	if (keysym == 115)
+	else if (keysym == 115)
 	{
-		if (game->map[j + 1][i] == '1')
-			return 0;
-		j += 1;
-		if (game->map[j][i] == 'C')
-		{
-			game->map[j][i] = '0';
-			game->collect.number_item_to_collect -= 1;
-		}
-		++move;
-		printf("Total numbers of movements|%d|\n", move);
-		update_map(game, i, j);
+		if (game->map[game->loc.character_y + 1][game->loc.character_x] == '1')
+			return(0) ;
+		key_down(game);
 	}
-	if (keysym == 97)
+	else if (keysym == 97)
 	{
-		if (game->map[j][i - 1] == '1')
-			return 0;
-		i -= 1;
-		if (game->map[j][i] == 'C')
-		{
-			game->map[j][i] = '0';
-			game->collect.number_item_to_collect -= 1;
-		}
-		++move;
-		printf("Total numbers of movements|%d|\n", move);
-		update_map(game, i, j);
+		if (game->map[game->loc.character_y][game->loc.character_x - 1] == '1')
+			return(0) ;
+		key_left(game);
 	}
-	if (keysym == 100)
+	else if (keysym == 100)
 	{
-		if (game->map[j][i + 1] == '1')
-			return 0;
-		i += 1;
-		if (game->map[j][i] == 'C')
-		{
-			game->map[j][i] = '0';
-			game->collect.number_item_to_collect -= 1;
-		}
-		++move;
-		printf("Total numbers of movements|%d|\n", move);
-		update_map(game, i, j);
+		if (game->map[game->loc.character_y][game->loc.character_x + 1] == '1')
+			return(0) ;
+		key_right(game);
 	}
-	if (game->map[j][i] == 'E' && game->collect.number_item_to_collect == 0)
+	ft_printf("Total numbers of movements|%d|\n", game->loc.move);
+	if (game->map[game->loc.character_y][game->loc.character_x] == 'E' && game->collect.number_item_to_collect == 0)
 		mlx_destroy_window(game->mlx, game->win);
 	return 0;
 }
-

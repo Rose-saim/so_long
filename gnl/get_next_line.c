@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: myrmarti <myrmarti@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/26 12:18:49 by myrmarti          #+#    #+#             */
+/*   Updated: 2022/01/26 12:37:04 by myrmarti         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 int	copy_after_nl(char *str)
@@ -23,7 +35,8 @@ int	copy_after_nl(char *str)
 
 int	error(int fd, char *buff)
 {
-	if (fd < 0 || BUFFER_SIZE < 0 || read(fd, "", 0) < 0 || read(fd, buff, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE < 0
+		|| read(fd, "", 0) < 0 || read(fd, buff, 0) < 0)
 		return (-1);
 	return (1);
 }
