@@ -6,7 +6,7 @@
 /*   By: myrmarti <myrmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 12:20:41 by myrmarti          #+#    #+#             */
-/*   Updated: 2022/01/26 16:12:58 by myrmarti         ###   ########.fr       */
+/*   Updated: 2022/01/27 20:34:34 by myrmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,23 +34,51 @@ void	verif_file(char *file)
 	}
 }
 
-void	close_window(t_game *game)
+void	trash(t_game *game)
 {
-	destroy_picture(game);
-	free_map(game->map);
-	mlx_destroy_display(game->mlx);
-	free(game->mlx);
+	if (game->image.background)
+		mlx_destroy_image(game->mlx, game->image.background);
+	if (game->image.wall)
+		mlx_destroy_image(game->mlx, game->image.wall);
+	if (game->image.item)
+		mlx_destroy_image(game->mlx, game->image.item);
+	if (game->image.character)
+		mlx_destroy_image(game->mlx, game->image.character);
+	if (game->image.exit)
+		mlx_destroy_image(game->mlx, game->image.exit);
+	if (game->win)
+		mlx_destroy_window(game->mlx, game->win);
+	if (game->mlx)
+	{
+		mlx_destroy_display(game->mlx);
+		free(game->mlx);
+	}
+	if (game->map)
+		free_map(game->map);
 }
 
 void	initilisation(t_game *game)
 {
+	int	width;
+	int	length;
+
+	length = 0;
+	width = ft_strlen(game->map[0]);
+	while (game->map[length])
+		++length;
 	game->loc.move = 0;
 	game->mlx = mlx_init();
 	if (!game->mlx)
+	{
+		trash(game);
 		write_error("Error since init mlx");
-	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "First map by image");
+	}
+	game->win = mlx_new_window(game->mlx, width * 50, length * 50, "First map by image");
 	if (!game->win)
+	{
+		trash(game);
 		write_error("Error since create window");
+	}
 }
 
 int	main(int ac, char **av)
@@ -58,6 +86,7 @@ int	main(int ac, char **av)
 	t_game	game;
 	int		fd;
 
+	game = (t_game){0};
 	if (ac != 2)
 		write_error("It is not good numbers of arguments");
 	verif_file(av[1]);
@@ -73,6 +102,6 @@ int	main(int ac, char **av)
 	mlx_hook(game.win, ClientMessage, LeaveWindowMask, &destroy_win, &game);
 	mlx_hook(game.win, KeyRelease, KeyReleaseMask, &hanlde_input, &game);
 	mlx_loop(game.mlx);
-	close_window(&game);
+	trash(&game);
 	return (0);
 }

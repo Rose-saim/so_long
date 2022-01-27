@@ -6,7 +6,7 @@
 /*   By: myrmarti <myrmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 12:19:43 by myrmarti          #+#    #+#             */
-/*   Updated: 2022/01/26 12:19:54 by myrmarti         ###   ########.fr       */
+/*   Updated: 2022/01/27 19:45:46 by myrmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,10 @@ char	*ft_realloc(char *s1, char *s2)
 		len_s2 = ft_strlen(s2);
 	newstr = malloc(sizeof(char) * (len_s2 + len_s1 + 1));
 	if (!newstr)
+	{
+		free(s1);
 		return (0);
+	}
 	ft_memcpy(newstr, s1, len_s1);
 	ft_memcpy(newstr + len_s1, s2, len_s2);
 	newstr[len_s1 + len_s2] = '\0';

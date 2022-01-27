@@ -23,8 +23,6 @@ int verif_map(char **map, t_game *game)
 		++i;
 	}
 	ret = limit_first_part(map);
-	if (ret == 1)
-		return (0);
 	ret = limit_second_part(map);
 	if (ret == 1)
 		return (0);
@@ -43,7 +41,7 @@ int limit_first_part(char **map)
 			map_is_wrong("Map is wrong", map);
 		++y;
 	}
-	while (map[y][x])
+	while (map[y][x + 1])
 	{
 		if (map[y][x] != '1')
 			map_is_wrong("Map is wrong", map);

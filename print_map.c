@@ -6,7 +6,7 @@
 /*   By: myrmarti <myrmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 14:19:23 by myrmarti          #+#    #+#             */
-/*   Updated: 2022/01/26 16:23:54 by myrmarti         ###   ########.fr       */
+/*   Updated: 2022/01/27 20:29:54 by myrmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*copy(char *str)
 
 	i = 0;
 	new_string = NULL;
+	if (!str)
+		return (NULL);
 	new_string = (char *)malloc(sizeof(char) *(ft_strlen(str) + 1));
 	if (!new_string)
 		return (NULL);
@@ -41,15 +43,29 @@ char	**get_line(char **map, char *new_line)
 	row += 1;
 	new_map = malloc(sizeof(char *) * (row + 1));
 	if (!new_map)
-		return (NULL);
+	{
+		free(new_line);
+		map_is_wrong("Malloc", map);
+	}
+	new_map[row] = NULL;
 	while (map && map[i])
 	{
 		new_map[i] = copy(map[i]);
+		if (!new_map[i])
+		{
+			free(new_line);
+			free_map(map);		
+			map_is_wrong("Malloc", new_map);
+		}
 		++i;
 	}
-	new_map[i] = copy(new_line);
-	new_map[i + 1] = NULL;
 	free_map(map);
+	new_map[i] = copy(new_line);
+	if (!new_map[i])
+	{
+		free(new_line);
+		map_is_wrong("Malloc", new_map);
+	}
 	return (new_map);
 }
 
@@ -60,24 +76,16 @@ void	get_map(int fd, t_game *game)
 
 	line = NULL;
 	game->map = NULL;
-	ret = 0;
-	get_next_line(fd, &line);
-	if (line == NULL)
-		write_error("Map is empty");
-	game->map = get_line(game->map, line);
-	free(line);
-	while (line)
+	ret = get_next_line(fd, &line);
+	while (ret > 0)
 	{
-		get_next_line(fd, &line);
-		if (ft_strlen(line) == 0)
-		{
-			free(line);
-			break ;
-		}
 		game->map = get_line(game->map, line);
 		free(line);
+		ret = get_next_line(fd, &line);
 	}
-	ret = verif_map(game->map, game);
+	game->map = get_line(game->map, line);
+	free(line);
+	verif_map(game->map, game);
 }
 
 void	back_mlx(t_game *game, int pst_x, int pst_y)

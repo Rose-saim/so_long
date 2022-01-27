@@ -16,9 +16,6 @@
 #define WIDTH 900
 #define HEIGHT 700
 
-#define WIN_WIDTH 500
-#define WIN_HEIGHT 900
-
 typedef struct	s_window
 {
 	int	x;
@@ -69,6 +66,7 @@ int 	limit_second_part(char **map);
 int 	verif_intern(char **map, t_game *game);
 int 	verif_map(char **map, t_game *game);
 
+void	map_is_wrong(char *str, char **map);
 void    free_map(char **map);
 void 	open_xpm(t_game *game);
 void    destroy_picture(t_game *game);
@@ -79,6 +77,7 @@ void	key_down(t_game *game);
 void	key_left(t_game *game);
 void	key_right(t_game *game);
 
+void	trash(t_game *game);
 void    get_map(int fd, t_game *game);
 void	print_map(t_game *game, int pst_x, int pst_y);
 void	update_map(t_game *game, int i, int j);

@@ -7,7 +7,7 @@ MANDA_OBJS =	 $(MANDA_NAMES:.c=.o)
 NAME = so_long
 
 CC = clang
-CFLAGS = -Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror -g
 MLX = mlx/libmlx_Linux.a -lX11 -lXext
 
 AR = ar rc
@@ -29,5 +29,9 @@ fclean:		clean
 			$(RM) $(NAME)
 
 re:			fclean all
+
+malloc_test: $(MANDA_OBJS)
+	make -C mlx
+	$(CC) $(CFLAGS) -fsanitize=undefined -rdynamic -o $@ ${MANDA_OBJS} $(MLX) -L. -lmallocator
 
 .PHONY:		all bonus clean fclean re
