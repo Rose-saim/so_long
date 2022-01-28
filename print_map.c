@@ -6,7 +6,7 @@
 /*   By: myrmarti <myrmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 14:19:23 by myrmarti          #+#    #+#             */
-/*   Updated: 2022/01/27 20:29:54 by myrmarti         ###   ########.fr       */
+/*   Updated: 2022/01/28 16:33:20 by myrmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,28 +33,18 @@ char	*copy(char *str)
 	return (new_string);
 }
 
-char	**get_line(char **map, char *new_line)
+void	recopy_map(char **map, char **new_map, char *new_line)
 {
-	int			i;
-	static int	row = 0;
-	char		**new_map;
+	int	i;
 
 	i = 0;
-	row += 1;
-	new_map = malloc(sizeof(char *) * (row + 1));
-	if (!new_map)
-	{
-		free(new_line);
-		map_is_wrong("Malloc", map);
-	}
-	new_map[row] = NULL;
 	while (map && map[i])
 	{
 		new_map[i] = copy(map[i]);
 		if (!new_map[i])
 		{
 			free(new_line);
-			free_map(map);		
+			free_map(map);
 			map_is_wrong("Malloc", new_map);
 		}
 		++i;
@@ -66,6 +56,22 @@ char	**get_line(char **map, char *new_line)
 		free(new_line);
 		map_is_wrong("Malloc", new_map);
 	}
+}
+
+char	**get_line(char **map, char *new_line)
+{
+	static int	row = 0;
+	char		**new_map;
+
+	row += 1;
+	new_map = malloc(sizeof(char *) * (row + 1));
+	if (!new_map)
+	{
+		free(new_line);
+		map_is_wrong("Malloc", map);
+	}
+	new_map[row] = NULL;
+	recopy_map(map, new_map, new_line);
 	return (new_map);
 }
 
@@ -86,76 +92,4 @@ void	get_map(int fd, t_game *game)
 	game->map = get_line(game->map, line);
 	free(line);
 	verif_map(game->map, game);
-}
-
-void	back_mlx(t_game *game, int pst_x, int pst_y)
-{
-	mlx_put_image_to_window(game->mlx, game->win, game->image.background,
-	pst_x * 50, pst_y * 50);
-}
-
-void	wall_mlx(t_game *game, int pst_x, int pst_y)
-{
-	mlx_put_image_to_window(game->mlx, game->win, game->image.wall,
-	pst_x * 50, pst_y * 50);
-}
-
-void	exit_mlx(t_game *game, int pst_x, int pst_y)
-{
-	mlx_put_image_to_window(game->mlx, game->win, game->image.exit,
-	pst_x * 50, pst_y * 50);
-}
-
-void	perso_mlx(t_game *game, int pst_x, int pst_y)
-{
-	mlx_put_image_to_window(game->mlx, game->win, game->image.character, pst_x * 50, pst_y * 50);
-}
-
-void	item_mlx(t_game *game, int pst_x, int pst_y)
-{
-	mlx_put_image_to_window(game->mlx, game->win, game->image.item,pst_x * 50, pst_y * 50);
-	game->collect.number_item_to_collect += 1;
-}
-
-
-void	print_map(t_game *game, int pst_x, int pst_y)
-{
-	int	ret;
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	ret = 0;
-	game->collect.number_item_to_collect = 0;
-	while (game->map[j])
-	{
-		i = 0;
-		game->window.x = ft_strlen(game->map[j]);
-		while (i < game->window.x)
-		{
-			if (game->map[j][i] == '1')
-				back_mlx(game, i, j);
-			if (game->map[j][i] == '0' && (i != pst_x || j != pst_y))
-				wall_mlx(game, i, j);
-			if (game->map[j][i] == 'E')
-				exit_mlx(game, i, j);
-			if (game->map[j][i] == 'P')
-			{
-				if (i != pst_x || j != pst_y)
-					wall_mlx(game, i, j);
-				perso_mlx(game,  pst_x, pst_y);
-			}
-			if (game->map[j][i] == 'C')
-				item_mlx(game, i, j);
-			++i;
-		}
-		++j;
-	}
-}
-
-void	update_map(t_game *game, int i, int j)
-{
-	mlx_clear_window(game->mlx, game->win);
-	print_map(game, i, j);
 }

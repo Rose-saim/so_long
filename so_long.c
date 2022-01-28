@@ -6,7 +6,7 @@
 /*   By: myrmarti <myrmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 12:20:41 by myrmarti          #+#    #+#             */
-/*   Updated: 2022/01/27 20:34:34 by myrmarti         ###   ########.fr       */
+/*   Updated: 2022/01/28 16:11:15 by myrmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	initilisation(t_game *game)
 		trash(game);
 		write_error("Error since init mlx");
 	}
-	game->win = mlx_new_window(game->mlx, width * 50, length * 50, "First map by image");
+	game->win = mlx_new_window(game->mlx, width * 50, length * 50, "So-long");
 	if (!game->win)
 	{
 		trash(game);
@@ -96,8 +96,12 @@ int	main(int ac, char **av)
 	get_map(fd, &game);
 	close (fd);
 	initilisation(&game);
-	open_xpm(&game);
-	print_map(&game, game.loc.character_x, game.loc.character_y);
+	open_xpm(&game, &game.image.background, "./img/Crate-_2_.xpm");
+	open_xpm(&game, &game.image.character, "./img/perso_wall.xpm");
+	open_xpm(&game, &game.image.wall, "./img/8.xpm");
+	open_xpm(&game, &game.image.item, "./img/mushroom.xpm");
+	open_xpm(&game, &game.image.exit, "./img/exit.xpm");
+	print_map(&game);
 	mlx_loop_hook(game.mlx, &handle_event, &game);
 	mlx_hook(game.win, ClientMessage, LeaveWindowMask, &destroy_win, &game);
 	mlx_hook(game.win, KeyRelease, KeyReleaseMask, &hanlde_input, &game);
