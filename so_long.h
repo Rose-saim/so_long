@@ -6,7 +6,7 @@
 /*   By: myrmarti <myrmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 16:30:03 by myrmarti          #+#    #+#             */
-/*   Updated: 2022/01/28 16:30:42 by myrmarti         ###   ########.fr       */
+/*   Updated: 2022/01/28 17:26:56 by myrmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include "gnl/get_next_line.h"
-# include "printf/ft_printf.h"
 
 typedef struct s_window
 {

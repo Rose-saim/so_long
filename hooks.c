@@ -6,7 +6,7 @@
 /*   By: myrmarti <myrmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 16:13:47 by myrmarti          #+#    #+#             */
-/*   Updated: 2022/01/28 16:28:17 by myrmarti         ###   ########.fr       */
+/*   Updated: 2022/01/28 17:26:51 by myrmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	hanlde_input(int keysym, t_game *game)
 		ret = key_right(game);
 	if (ret != 0)
 		return (0);
-	ft_printf("Total numbers of movements|%d|\n", game->loc.move);
+	printf("Total numbers of movements|%d|\n", game->loc.move);
 	if (game->map[game->loc.character_y][game->loc.character_x] == 'E'
 		&& game->collect.number_item_to_collect == 0)
 	{

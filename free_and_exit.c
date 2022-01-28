@@ -6,7 +6,7 @@
 /*   By: myrmarti <myrmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 16:53:34 by myrmarti          #+#    #+#             */
-/*   Updated: 2022/01/28 16:15:41 by myrmarti         ###   ########.fr       */
+/*   Updated: 2022/01/28 17:27:33 by myrmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,6 @@ void	write_error(char *str)
 void	map_is_wrong(char *str, char **map)
 {
 	free_map(map);
-	ft_printf("Error\n");
+	printf("Error\n");
 	write_error(str);
 }
